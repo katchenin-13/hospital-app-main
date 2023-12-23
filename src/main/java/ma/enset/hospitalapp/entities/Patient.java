@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+
 @Entity
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class Patient {

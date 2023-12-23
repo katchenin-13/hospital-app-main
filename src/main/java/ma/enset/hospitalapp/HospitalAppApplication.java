@@ -2,6 +2,7 @@ package ma.enset.hospitalapp;
 
 import ma.enset.hospitalapp.entities.Patient;
 import ma.enset.hospitalapp.repository.PatientRepository;
+import ma.enset.hospitalapp.security.services.AccountService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,7 +22,7 @@ public class HospitalAppApplication {
         SpringApplication.run(HospitalAppApplication.class, args);
     }
 
-    @Bean
+    //@Bean
     CommandLineRunner start(PatientRepository patientRepository){
         return args -> {
             patientRepository.save(new Patient(null,"Mohamed",new Date(),false,42));
@@ -33,11 +34,10 @@ public class HospitalAppApplication {
 
     @Bean
     PasswordEncoder passwordEncoder(){
-
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
+    //@Bean
     CommandLineRunner commandLineRunner(JdbcUserDetailsManager jdbcUserDetailsManager){
        PasswordEncoder passwordEncoder = passwordEncoder();
        return args -> {
@@ -53,6 +53,19 @@ public class HospitalAppApplication {
 
             );
        };
+    }
+   //@Bean
+    CommandLineRunner commandLineRunner(AccountService accountService){
+        return args -> {
+            accountService.addNewRole("USER");
+            accountService.addNewRole("ADMIN");
+            accountService.addNewUser("user1","1234","email@gmail.com","1234");
+            accountService.addNewUser("admin","1234","email@gmail.com","1234");
+
+            accountService.addRoleToUser("user1","USER");
+            accountService.addRoleToUser("admin","ADMIN");
+            accountService.addRoleToUser("admin","USER");
+        };
     }
 
 }
